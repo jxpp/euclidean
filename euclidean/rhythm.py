@@ -37,7 +37,10 @@ def _compute_bitmap(num_slots, num_pulses):
     bitmap = _build_string('', level)
 
     # The algorithm described has the output shifted from where we want it
-    offset = bitmap.index('1')
+    try:
+        offset = bitmap.index('1')
+    except ValueError:  # in case of no ones
+        offset = 0
     bitmap = bitmap[offset:] + bitmap[:offset]
 
     return bitmap
@@ -73,7 +76,10 @@ class EuclideanRhythm:
         #        figure out the inverse algorithm
         steps = len(gates)
         active = gates.count(True)
-        offset = gates.index(True)
+        try:
+            offset = gates.index(True)
+        except ValueError:
+            offset = 0
 
         return cls(steps, active, offset)
 
