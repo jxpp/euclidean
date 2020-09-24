@@ -3,6 +3,15 @@ import pytest
 from euclidean.rhythm import EuclideanRhythm
 
 
+@pytest.mark.parametrize('steps,active,offset,expected_error', [
+    (2, 4, 0, ValueError),
+    (2, 2, 3, ValueError),
+])
+def test_fail_euclideanRhythms(steps, active, offset, expected_error):
+    with pytest.raises(expected_error):
+        EuclideanRhythm(steps, active, offset)
+
+
 g8_4_0 = [True, False, True, False, True, False, True, False ]
 e8_4_0 = EuclideanRhythm(8, 4, 0)
 
