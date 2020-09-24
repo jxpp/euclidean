@@ -4,8 +4,94 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>Euclidean conversion</title>
+    <style type="text/css" media="all">
+      body {
+        background-image: url("https://blog.geocities.institute/wp-content/uploads/02.png");
+        background-repeat: repeat;
+      }
+      table, th, td {
+        border-collapse: collapse;
+      }
+      table {
+        margin: 0px;
+        padding 0px;
+      }
+      td {
+        border: 3px solid black;
+        padding: 20px;
+      }
+      td:hover {
+        background: blue;
+      }
+      .gate-off {
+        background: white;
+      }
+      .gate-off:hover {
+        background: blue;
+      }
+      .gate-on {
+        background: darkblue;
+      }
+      .gate-on:hover {
+        background: darkred;
+      }
+      .with-border {
+        background: white;
+        margin: 10px;
+        border: 1px solid black;
+      }
+    </style>
   </head>
   <body>
-    <p>Hi! Welcome to this page.</p>
+    <center>
+      <div class='with-border'>
+      <h1>Euclidean conversions</h1>
+      </div>
+    </center>
+    <div class='with—border'>
+    <p>Hi! Welcome to this page. Below there is an interface to make conversions to and from euclidean rhythms.</p>
+    <center>
+    <table>
+      <tr>
+        <td onclick="toggle(this)" id="gate0" class='gate-off'></td>
+        <td onclick="toggle(this)" id="gate1" class='gate-off'></td>
+        <td onclick="toggle(this)" id="gate2" class='gate-off'></td>
+        <td onclick="toggle(this)" id="gate3" class='gate-off'></td>
+        <td onclick="toggle(this)" id="gate4" class='gate-off'></td>
+        <td onclick="toggle(this)" id="gate5" class='gate-off'></td>
+        <td onclick="toggle(this)" id="gate6" class='gate-off'></td>
+        <td onclick="toggle(this)" id="gate7" class='gate-off'></td>
+      </tr>
+    </table>
+    </center>
+    <button onclick="calculateRhythm()" style="border: 1px solid black; background: white;">PRESS ME!!!</button>
+    </div>
   </body>
+  <script charset="utf-8">
+    function toggle(element) {
+      element.className = element.className === 'gate-off' ? 'gate-on' : 'gate-off';
+    }
+    function calculateRhythm() {
+      let gates = document.querySelectorAll('*[id^="gate"]');
+      let gate_list = []
+      for (let i=0; i < gates.length; i++) {
+        if (gates[i].className === 'gate-off') {
+          gate_list.push(false);
+        } else {
+          gate_list.push(true);
+        }
+      }
+      fetch('/api/calculate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify({
+          'gates': gate_list
+        })
+      })
+        .then(response => response.json())
+        .then(result => {console.log(result)});
+    }
+  </script>
 </html>
